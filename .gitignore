@@ -1,2 +1,5 @@
 venv34/*
 venv34
+__pycache__/
+*.pyc
+*.pyo
