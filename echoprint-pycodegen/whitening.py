@@ -1,4 +1,5 @@
 import numpy
+import scipy.io.wavfile as wavfile
 import struct
 import array
 import wave
@@ -10,12 +11,16 @@ T = 8
 
 class Whitening:
   def __init__(self, audio):
-    # audio is a wave audio
+    # audio is a scipy.io.wavfile
     # TODO: isso aqui não dá pra sempre puxar direto do audio?
     # audio = wave.open("../samples/vida_marvada_44100.wav")
-    self.audio = audio
-    self.num_samples = audio.getnframes()
 
+    self.audio = audio
+    self.sample_rate = audio[0]
+    self.samples = audio[1]
+    self.num_samples = len(audio[1])
+
+    # init parameters and coeficients
     self.P = 40
     self.alpha = 1.0/T
     self.x0 = [0.0] * self.P
@@ -24,20 +29,15 @@ class Whitening:
 
 
   def compute(self):
-    block = self.audio.readframes(BLOCK_LENGTH)
-    self.compute_block(block)
-    while block != '':
-      self.compute_block(block)
-      block = self.audio.readframes(BLOCK_LENGTH)
+    for i in range(self.num_samples)[:self.num_samples:BLOCK_LENGTH]:
+      self.compute_block(i)
 
-
-  def compute_block(self, block_bytes):
-    block = array.array('h', block_bytes)
+  def compute_block(self, start):
+    print(start)
+    block = self.samples[start:(BLOCK_LENGTH+start):]
     self.R = self.calculate_block_autocorrelation(block)
     E = self.calculate_new_filter_coefficients()
     self.calculate_new_output(block)
-      # getsampwidth()https://gist.github.com/rpls/3760188
-      # here comes the magic for each block
     return
 
   def calculate_block_autocorrelation(self, block):

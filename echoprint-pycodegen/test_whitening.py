@@ -1,11 +1,12 @@
 import unittest
 import wave
+import scipy.io.wavfile as wavfile
 import whitening
 
 class TestWhitening(unittest.TestCase):
 
   def setUp(self):
-    self.audio = wave.open("../samples/small.wav")
+    self.audio = wavfile.read("../samples/canto-tetrico-11025Hz_mono_16-bit.wav")
     self.obj = whitening.Whitening(self.audio)
 
   def test_compute(self):
