@@ -14,7 +14,7 @@ import struct
 import array
 import wave
 import pyaudio
-from spectrum import LEVINSON
+#from spectrum import LEVINSON
 
 BLOCK_LENGTH = 10000
 T = 8
@@ -28,6 +28,7 @@ class Whitening:
 
     self.audio = audio
     self.sample_rate = audio[0]
+    # TODO: isso deve estar pra fora da classe
     self.samples = list(map(lambda x: x / 32768.0, audio[1]))
     self.num_samples = len(audio[1])
 
@@ -38,7 +39,6 @@ class Whitening:
     self.x0 = [0.0] * (self._p+1)
     self.ai = [None] * (self._p+1)
     self.whitened = [None] * self.num_samples
-
 
   def compute(self):
     for i in range(self.num_samples)[:self.num_samples:BLOCK_LENGTH]:
