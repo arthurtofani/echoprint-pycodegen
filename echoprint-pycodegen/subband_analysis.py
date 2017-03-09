@@ -32,7 +32,6 @@ C = [0.000000477,  0.000000954,  0.000001431,  0.000002384,  0.000003815,  0.000
 class SubbandAnalysis:
 
   def __init__(self, samples):
-    # TODO: this can be refactored
     self.samples = samples
     self.num_samples = len(self.samples)
     self.calculate_coefficients()
