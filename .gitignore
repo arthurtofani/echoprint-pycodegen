@@ -3,3 +3,4 @@ venv34
 __pycache__/
 *.pyc
 *.pyo
+samples
